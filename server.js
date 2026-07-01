@@ -26,8 +26,7 @@ const rootDir = __dirname;
 const dataDir = path.join(rootDir, 'data');
 const dbType = process.env.DB_TYPE || 'sqlite';
 const dbPath = process.env.DB_PATH || path.join(dataDir, 'requests.sqlite');
-const adminUsername = process.env.ADMIN_USERNAME;
-const adminPassword = process.env.ADMIN_PASSWORD;
+const adminSecret = process.env.ADMIN_SECRET;
 const sessionSecret = process.env.SESSION_SECRET;
 const sessions = new Map();
 
@@ -35,42 +34,14 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-if (!adminUsername || !adminPassword || !sessionSecret) {
-  console.error('Missing required environment variables: ADMIN_USERNAME, ADMIN_PASSWORD, SESSION_SECRET');
+if (!adminSecret || !sessionSecret) {
+  console.error('Missing required environment variables: ADMIN_SECRET, SESSION_SECRET');
   process.exit(1);
 }
 
 if (dbType !== 'sqlite') {
   console.error('Unsupported DB_TYPE. Only sqlite is supported in this deployment setup.');
   process.exit(1);
-}
-
-function createHash(value, salt) {
-  return crypto.pbkdf2Sync(value, salt, 310000, 32, 'sha256').toString('hex');
-}
-
-function timingSafeEqual(a, b) {
-  const aBuffer = Buffer.from(a, 'hex');
-  const bBuffer = Buffer.from(b, 'hex');
-  if (aBuffer.length !== bBuffer.length) return false;
-  return crypto.timingSafeEqual(aBuffer, bBuffer);
-}
-
-function verifyAdminPassword(username, password) {
-  if (username !== adminUsername) return false;
-  if (!adminPassword) return false;
-  const salt = process.env.ADMIN_PASSWORD_SALT || 'giftcard-admin-hash';
-  const expectedHash = process.env.ADMIN_PASSWORD_HASH || createHash(adminPassword, salt);
-  const suppliedHash = createHash(password, salt);
-  return timingSafeEqual(suppliedHash, expectedHash);
-}
-
-function getUserByUsername(username) {
-  return db.prepare('SELECT * FROM users WHERE username = ?').get(username) || null;
-}
-
-function verifyUserPassword(password, storedHash, storedSalt) {
-  return timingSafeEqual(createHash(password, storedSalt), storedHash);
 }
 
 function openDatabase() {
@@ -81,15 +52,6 @@ function openDatabase() {
       type TEXT NOT NULL,
       brand TEXT NOT NULL,
       payload TEXT NOT NULL,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      username TEXT NOT NULL UNIQUE,
-      email TEXT NOT NULL,
-      password_hash TEXT NOT NULL,
-      password_salt TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
 
@@ -115,34 +77,6 @@ function sendJson(res, statusCode, payload, extraHeaders = {}) {
     ...extraHeaders
   });
   res.end(JSON.stringify(payload));
-}
-
-function createSessionId() {
-  const random = crypto.randomBytes(24).toString('hex');
-  if (!sessionSecret) return random;
-  return crypto.createHmac('sha256', sessionSecret).update(random).digest('hex');
-}
-
-function parseCookies(req) {
-  const cookieHeader = req.headers.cookie || '';
-  return cookieHeader.split(';').map((entry) => entry.trim()).filter(Boolean).reduce((acc, entry) => {
-    const [key, ...rest] = entry.split('=');
-    acc[key] = rest.join('=');
-    return acc;
-  }, {});
-}
-
-function getSession(req) {
-  const cookies = parseCookies(req);
-  const sessionId = cookies.admin_session;
-  if (!sessionId) return null;
-  return sessions.get(sessionId) || null;
-}
-
-function setSessionCookie(res, req, sessionId) {
-  const isSecure = req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production';
-  const secureFlag = isSecure ? '; Secure' : '';
-  res.setHeader('Set-Cookie', [`admin_session=${sessionId}; HttpOnly; SameSite=Lax; Path=/; Max-Age=3600${secureFlag}`]);
 }
 
 function parseBody(req) {
@@ -270,71 +204,6 @@ const server = http.createServer(async (req, res) => {
   const { method, url = '/' } = req;
   const pathname = new URL(url, `http://${req.headers.host || '127.0.0.1'}`).pathname;
 
-  if (method === 'POST' && pathname === '/api/signup') {
-    try {
-      const body = await parseBody(req);
-      const username = (body.username || '').trim();
-      const email = (body.email || '').trim();
-      const password = (body.password || '').trim();
-
-      if (!username || !email || !password) {
-        sendJson(res, 400, { ok: false, error: 'Username, email and password are required' });
-        return;
-      }
-
-      if (getUserByUsername(username)) {
-        sendJson(res, 409, { ok: false, error: 'Username already exists' });
-        return;
-      }
-
-      const salt = crypto.randomBytes(16).toString('hex');
-      const passwordHash = createHash(password, salt);
-      db.prepare('INSERT INTO users (id, username, email, password_hash, password_salt, created_at) VALUES (?, ?, ?, ?, ?, ?)').run(
-        Date.now().toString(36),
-        username,
-        email,
-        passwordHash,
-        salt,
-        new Date().toISOString()
-      );
-
-      sendJson(res, 200, { ok: true, message: 'User created' });
-    } catch (error) {
-      sendJson(res, 400, { ok: false, error: error.message });
-    }
-    return;
-  }
-
-  if (method === 'POST' && pathname === '/api/login') {
-    try {
-      const body = await parseBody(req);
-      const username = (body.username || '').trim();
-      const password = (body.password || '').trim();
-
-      if (verifyAdminPassword(username, password)) {
-        const sessionId = createSessionId();
-        sessions.set(sessionId, { username: adminUsername, role: 'admin', createdAt: Date.now() });
-        setSessionCookie(res, req, sessionId);
-        sendJson(res, 200, { ok: true, message: 'Authenticated', role: 'admin' });
-        return;
-      }
-
-      const user = getUserByUsername(username);
-      if (user && verifyUserPassword(password, user.password_hash, user.password_salt)) {
-        const sessionId = createSessionId();
-        sessions.set(sessionId, { username: user.username, role: 'user', createdAt: Date.now() });
-        setSessionCookie(res, req, sessionId);
-        sendJson(res, 200, { ok: true, message: 'Authenticated', role: 'user' });
-        return;
-      }
-
-      sendJson(res, 401, { ok: false, error: 'Invalid credentials' });
-    } catch (error) {
-      sendJson(res, 400, { ok: false, error: error.message });
-    }
-    return;
-  }
-
   if (method === 'POST' && pathname === '/api/submit-form') {
     try {
       const body = await parseBody(req);
@@ -423,9 +292,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/api/requests') {
-    const session = getSession(req);
-    if (!session) {
-      sendJson(res, 401, { ok: false, error: 'Unauthorized' });
+    const providedSecret = req.headers['x-admin-secret'];
+    if (providedSecret !== adminSecret) {
+      sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
     sendJson(res, 200, getRequests());
@@ -438,10 +307,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/admin') {
-    const session = getSession(req);
-    if (!session) {
-      res.writeHead(302, { Location: '/login' });
-      res.end();
+    const providedSecret = req.headers['x-admin-secret'];
+    if (providedSecret !== adminSecret) {
+      sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
     serveStatic(req, res, 'admin.html');
@@ -449,10 +317,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/admin/submissions') {
-    const session = getSession(req);
-    if (!session) {
-      res.writeHead(302, { Location: '/login' });
-      res.end();
+    const providedSecret = req.headers['x-admin-secret'];
+    if (providedSecret !== adminSecret) {
+      sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
     serveStatic(req, res, 'admin-submissions.html');
@@ -460,9 +327,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/api/submissions') {
-    const session = getSession(req);
-    if (!session) {
-      sendJson(res, 401, { ok: false, error: 'Unauthorized' });
+    const providedSecret = req.headers['x-admin-secret'];
+    if (providedSecret !== adminSecret) {
+      sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
     const rows = db.prepare('SELECT * FROM submissions ORDER BY created_at DESC').all();
@@ -471,12 +338,12 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/login') {
-    serveStatic(req, res, 'login.html');
+    sendJson(res, 404, { ok: false, error: 'Not found' });
     return;
   }
 
   if (method === 'GET' && pathname === '/signup') {
-    serveStatic(req, res, 'signup.html');
+    sendJson(res, 404, { ok: false, error: 'Not found' });
     return;
   }
 

@@ -32,8 +32,7 @@ function startServer() {
     cwd: projectRoot,
     env: {
       ...process.env,
-      ADMIN_USERNAME: 'admin',
-      ADMIN_PASSWORD: 'test-password',
+      ADMIN_SECRET: 'test-admin-secret',
       SESSION_SECRET: 'test-session-secret',
       PORT: String(port)
     },
@@ -117,37 +116,26 @@ test('POST /api/purchase saves a purchase request', async () => {
   }
 });
 
-test('POST /api/login authenticates the admin user and protects /api/requests', async () => {
+test('GET /api/requests requires the admin secret header', async () => {
   resetDataFile();
   const child = startServer();
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {
-    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'admin', password: 'test-password' })
+    const deniedResponse = await fetch(`http://127.0.0.1:${child.port}/api/requests`);
+    assert.equal(deniedResponse.status, 403);
+
+    const allowedResponse = await fetch(`http://127.0.0.1:${child.port}/api/requests`, {
+      headers: { 'x-admin-secret': 'test-admin-secret' }
     });
-
-    assert.equal(loginResponse.status, 200);
-    const loginPayload = await loginResponse.json();
-    assert.equal(loginPayload.ok, true);
-
-    const cookie = loginResponse.headers.get('set-cookie') || '';
-    assert.match(cookie, /admin_session=/);
-
-    const requestsResponse = await fetch(`http://127.0.0.1:${child.port}/api/requests`, {
-      headers: { Cookie: cookie }
-    });
-
-    assert.equal(requestsResponse.status, 200);
+    assert.equal(allowedResponse.status, 200);
   } finally {
     child.kill('SIGTERM');
   }
 });
 
-test('GET / exposes an admin login link on the homepage', async () => {
+test('GET / exposes no signup or login links on the homepage', async () => {
   const child = startServer();
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -156,68 +144,42 @@ test('GET / exposes an admin login link on the homepage', async () => {
     const response = await fetch(`http://127.0.0.1:${child.port}/`);
     assert.equal(response.status, 200);
     const html = await response.text();
-    assert.match(html, /href="\/login"/i);
-    assert.match(html, /admin login/i);
+    assert.doesNotMatch(html, /href="\/signup"/i);
+    assert.doesNotMatch(html, /href="\/login"/i);
   } finally {
     child.kill('SIGTERM');
   }
 });
 
-test('GET /signup serves the signup page and homepage links to it', async () => {
+test('GET /signup and /login are disabled', async () => {
   const child = startServer();
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {
-    const homeResponse = await fetch(`http://127.0.0.1:${child.port}/`);
-    const homeHtml = await homeResponse.text();
-    assert.match(homeHtml, /href="\/signup"/i);
-
     const signupResponse = await fetch(`http://127.0.0.1:${child.port}/signup`);
-    assert.equal(signupResponse.status, 200);
-    const signupHtml = await signupResponse.text();
-    assert.match(signupHtml, /sign up/i);
+    assert.equal(signupResponse.status, 404);
+
+    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/login`);
+    assert.equal(loginResponse.status, 404);
   } finally {
     child.kill('SIGTERM');
   }
 });
 
-test('POST /api/signup stores a user and allows backend login', async () => {
-  resetDataFile();
+test('GET /admin requires the admin secret header', async () => {
   const child = startServer();
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {
-    const signupResponse = await fetch(`http://127.0.0.1:${child.port}/api/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: 'demo-user',
-        email: 'demo@example.com',
-        password: 'demo-pass-123'
-      })
+    const unauthorized = await fetch(`http://127.0.0.1:${child.port}/admin`);
+    assert.equal(unauthorized.status, 403);
+
+    const authorized = await fetch(`http://127.0.0.1:${child.port}/admin`, {
+      headers: { 'x-admin-secret': 'test-admin-secret' }
     });
-
-    assert.equal(signupResponse.status, 200);
-    const signupPayload = await signupResponse.json();
-    assert.equal(signupPayload.ok, true);
-
-    const db = new DatabaseSync(dataFile);
-    const storedUsers = db.prepare('SELECT username, email FROM users').all();
-    db.close();
-    assert.equal(storedUsers.length, 1);
-    assert.equal(storedUsers[0].username, 'demo-user');
-
-    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'demo-user', password: 'demo-pass-123' })
-    });
-
-    assert.equal(loginResponse.status, 200);
-    const loginPayload = await loginResponse.json();
-    assert.equal(loginPayload.ok, true);
+    assert.equal(authorized.status, 200);
   } finally {
     child.kill('SIGTERM');
   }
@@ -251,17 +213,10 @@ test('POST /api/submit-form stores submissions and /api/submissions requires aut
     assert.equal(stored[0].name, 'Jane Doe');
 
     const unauthenticatedResponse = await fetch(`http://127.0.0.1:${child.port}/api/submissions`);
-    assert.equal(unauthenticatedResponse.status, 401);
-
-    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'admin', password: 'test-password' })
-    });
-    const cookie = loginResponse.headers.get('set-cookie') || '';
+    assert.equal(unauthenticatedResponse.status, 403);
 
     const authenticatedResponse = await fetch(`http://127.0.0.1:${child.port}/api/submissions`, {
-      headers: { Cookie: cookie }
+      headers: { 'x-admin-secret': 'test-admin-secret' }
     });
     assert.equal(authenticatedResponse.status, 200);
     const payload = await authenticatedResponse.json();
