@@ -146,3 +146,38 @@ test('POST /api/login authenticates the admin user and protects /api/requests', 
     child.kill('SIGTERM');
   }
 });
+
+test('GET / exposes an admin login link on the homepage', async () => {
+  const child = startServer();
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  try {
+    const response = await fetch(`http://127.0.0.1:${child.port}/`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /href="\/login"/i);
+    assert.match(html, /admin login/i);
+  } finally {
+    child.kill('SIGTERM');
+  }
+});
+
+test('GET /signup serves the signup page and homepage links to it', async () => {
+  const child = startServer();
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  try {
+    const homeResponse = await fetch(`http://127.0.0.1:${child.port}/`);
+    const homeHtml = await homeResponse.text();
+    assert.match(homeHtml, /href="\/signup"/i);
+
+    const signupResponse = await fetch(`http://127.0.0.1:${child.port}/signup`);
+    assert.equal(signupResponse.status, 200);
+    const signupHtml = await signupResponse.text();
+    assert.match(signupHtml, /sign up/i);
+  } finally {
+    child.kill('SIGTERM');
+  }
+});

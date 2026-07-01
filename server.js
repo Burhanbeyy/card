@@ -304,6 +304,11 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (method === 'GET' && pathname === '/signup') {
+    serveStatic(req, res, 'signup.html');
+    return;
+  }
+
   if (method === 'GET' && pathname === '/health') {
     sendJson(res, 200, { ok: true, status: 'healthy' });
     return;
