@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: white; margin: 0; min-height: 100vh; display: grid; place-items: center; }
+    .card { width: min(92vw, 420px); background: white; color: #111827; padding: 24px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.2); }
+    input { width: 100%; box-sizing: border-box; padding: 10px 12px; margin-top: 8px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; }
+    button { width: 100%; background: #111827; color: white; border: 0; padding: 12px; border-radius: 8px; cursor: pointer; }
+    .error { color: #b91c1c; margin-top: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Admin Login</h2>
+    <form id="login-form">
+      <label>Username</label>
+      <input id="username" name="username" required />
+      <label>Password</label>
+      <input id="password" name="password" type="password" required />
+      <button type="submit">Sign In</button>
+      <div id="error" class="error"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const error = document.getElementById('error');
+      error.textContent = '';
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.ok) {
+        window.location.href = '/admin';
+      } else {
+        error.textContent = data.error || 'Invalid credentials';
+      }
+    });
+  </script>
+</body>
+</html>

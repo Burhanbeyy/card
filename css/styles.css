@@ -1,0 +1,1472 @@
+:root {
+    --primary-color: #000000;
+    --secondary-color: #f5f5f5;
+    --accent-color: #007bff; /* Blue */
+    --text-color: #333333;
+    --light-text: #666666;
+    --white: #ffffff;
+    --footer-bg: #0a1128; /* Dark Blue */
+    --border-color: #e0e0e0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Top Bar */
+.top-bar {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Header */
+header {
+    padding: 15px 0;
+    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.highlight {
+    color: var(--accent-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.logo i {
+    color: #3498db; /* Light blue like the image */
+    font-size: 2.5rem;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.icon-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+}
+
+.icon-circle:hover {
+    background-color: #e0e0e0;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    border-radius: 30px; /* More rounded */
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-color);
+    background-color: #f9f9f9;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-dark {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
+
+/* Hero Section */
+.hero {
+    padding: 100px 0;
+    background-color: #fff;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.hero-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.hero-description {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 40px;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.hero-prompt {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: #000;
+    font-size: 1.2rem; /* Larger prompt text */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-black {
+    background-color: #000;
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-transform: none; /* Removed uppercase */
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-black:hover {
+    background-color: #333;
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #000;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-transform: none; /* Removed uppercase */
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    border: 2px solid #000;
+}
+
+.btn-white:hover {
+    background-color: #f5f5f5;
+}
+
+.hero-image {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.slider-container {
+    width: 100%;
+    max-width: 600px; /* Increased from 500px */
+    height: 450px; /* Increased from 350px */
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.slides-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+    background-color: #000; /* Ensure dark background for opacity contrast */
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Background Images */
+.slide-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain; /* Changed to contain to ensure full image fits */
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    transition: transform 6s ease;
+}
+
+/* Specific Slide Backgrounds with matching background colors */
+.slide-bg-1 {
+    background-image: url('../images/hero-1.webp');
+    background-color: #3d3d3d; /* Grey to match the grid image */
+}
+
+.slide-bg-2 {
+    background-image: url('../images/hero-2.png');
+    background-color: #ffffff; /* White to match the gift box image */
+}
+
+.slide-bg-3 {
+    background-image: url('../images/hero-3.webp');
+    background-color: #ffffff; /* White to match the fan image */
+}
+
+/* Subtle zoom effect for active slide */
+.slide.active .slide-bg {
+    transform: scale(1.05);
+}
+
+.slide-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    z-index: 2;
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    z-index: 3;
+    width: calc(100% - 80px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-text {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.slide.active .slide-text {
+    animation: fadeInUp 0.8s ease-out 0.3s forwards;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+    backdrop-filter: blur(2px);
+}
+
+.nav-arrow:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-slide { left: 15px; }
+.next-slide { right: 15px; }
+
+.slider-nav {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.4);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    padding: 0;
+}
+
+.nav-dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+.nav-dot:hover {
+    background-color: rgba(255,255,255,0.8);
+}
+
+.ribbon-horizontal {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    background-color: var(--accent-color);
+}
+
+.text-overlay {
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+}
+
+.text-overlay h2 {
+    font-size: 2rem;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+/* Why Choose Us */
+.why-choose-us {
+    padding: 80px 0;
+}
+
+.why-choose-us .container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.why-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.why-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.why-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.why-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    gap: 50px;
+    margin-top: 40px;
+}
+
+.stat-item h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Gift Cards Grid */
+.gift-cards {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.card-item {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.card-img {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.card-img img {
+    width: 60%;
+    height: auto;
+    object-fit: contain;
+}
+
+.card-info h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.placeholder-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.placeholder-text.gold {
+    color: #ffd700;
+}
+
+.card-img.xbox {
+    background: #107c10;
+}
+.card-img.xbox img {
+    filter: brightness(0) invert(1);
+}
+
+/* Feedback */
+.feedback {
+    padding: 80px 0;
+    text-align: center;
+    background-color: #fcfcfc;
+}
+
+.testimonial {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.03);
+}
+
+.avatar {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.testimonial p {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--light-text);
+}
+
+/* FAQ */
+.faq {
+    padding: 80px 0;
+    background-color: var(--footer-bg);
+    color: var(--white);
+}
+
+.section-header.white h2, .section-header.white p {
+    color: var(--white);
+}
+
+.accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 20px 0;
+    text-align: left;
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-right: 20px;
+}
+
+.accordion-content p {
+    padding-bottom: 20px;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 200px; /* Approximate max height */
+}
+
+.accordion-item.active .accordion-header i {
+    transform: rotate(180deg);
+}
+
+/* Footer */
+footer {
+    background-color: #fff;
+    padding: 80px 0 20px;
+    border-top: 1px solid #eaeaea;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.brand-column {
+    flex: 2; /* Wider column */
+    max-width: 400px;
+}
+
+.footer-logo img {
+    max-width: 250px;
+    margin-bottom: 20px;
+}
+
+.footer-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 350px;
+}
+
+.newsletter-form input {
+    padding: 15px 25px;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.newsletter-form input:focus {
+    border-color: var(--accent-color);
+}
+
+.newsletter-form button {
+    padding: 12px 30px;
+    background-color: #222;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+}
+
+.newsletter-form button:hover {
+    background-color: #444;
+}
+
+.links-column {
+    display: flex;
+    gap: 60px;
+}
+
+.link-group h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+.link-group ul li {
+    margin-bottom: 15px;
+}
+
+.link-group ul li a {
+    color: #666;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.link-group ul li a:hover {
+    color: var(--accent-color);
+}
+
+.contact-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align left as per image (right col) */
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+}
+
+.social-icon.twitter {
+    background-color: #1DA1F2;
+}
+
+.social-icon.whatsapp {
+    background-color: #25D366;
+}
+
+.social-icon.facebook {
+    background-color: #3b5998;
+}
+
+.contact-info h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.contact-info a {
+    color: #666;
+    font-size: 1rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid #eaeaea;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #888;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-bottom-links a {
+    color: #888;
+}
+
+
+/* Responsive Footer */
+@media (max-width: 992px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .brand-column {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .links-column {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        padding-right: 0;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .hero-search label, .action-buttons {
+        justify-content: center;
+    }
+    
+    .why-choose-us .container {
+        flex-direction: column-reverse;
+    }
+    
+    .why-image, .why-content {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .stats {
+        justify-content: center;
+    }
+    
+    nav ul {
+        display: none; /* Simple hide for mobile for now */
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+    padding: 48px 16px; /* Ensure consistent top/bottom spacing */
+    box-sizing: border-box;
+}
+
+.modal-overlay.show {
+    display: flex; /* Changed from block to flex for centering */
+    opacity: 1;
+}
+
+.modal-overlay.fullscreen {
+    padding: 0;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 650px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+    position: relative;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    
+    /* Background Image Effect */
+    background-image: url('../images/hero-2.png'); /* Use hero-2 as requested before */
+    background-size: 300px;
+    background-repeat: no-repeat;
+    background-position: 120% 120%; /* Position off-center to right-bottom */
+    /* Add a white overlay to make it subtle */
+    max-height: calc(100vh - 96px); /* viewport minus overlay padding */
+    overflow-y: auto; /* scroll inner content if needed */
+}
+
+.modal-overlay.fullscreen .modal-content {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: auto;
+}
+
+/* Add a pseudo-element for the white overlay to blend the background image */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.92); /* High opacity white to fade the image */
+    border-radius: 20px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.modal-body {
+    position: relative;
+    z-index: 1; /* Ensure content is above the background overlay */
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Purchase modal should be clean white without watermark background */
+.purchase-content {
+    background-image: none;
+    max-width: 920px;
+    width: 94%;
+    /* create consistent top/bottom breathing room */
+    max-height: none;
+    overflow: hidden; /* remove internal scrollbar */
+    padding: 32px;
+}
+.modal-overlay.show .purchase-content {
+    /* subtle zoom-in to avoid touching top/bottom */
+    transform: scale(0.95);
+}
+
+/* Payment modal shares the same layout sizes */
+.payment-content {
+    background-image: none;
+    max-width: 920px;
+    width: 94%;
+    max-height: none;
+    overflow: hidden; /* remove internal scrollbar */
+    padding: 32px;
+}
+.modal-overlay.show .payment-content {
+    transform: scale(0.95);
+}
+.payment-modal .purchase-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+.payment-modal .purchase-card-preview {
+    width: 360px;
+    height: 220px;
+    background: #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+.payment-modal #payment-card-image {
+    max-width: 80%;
+    height: auto;
+    object-fit: contain;
+}
+.payment-modal .btn-primary {
+    background-color: #0a1128;
+    color: #fff;
+}
+.payment-modal .btn-primary:hover {
+    background-color: #1a2340;
+}
+.payment-modal.modal-body {
+    padding: 20px;
+}
+@media (max-height: 850px) {
+    .modal-overlay.show .payment-content { transform: scale(0.94); }
+}
+@media (max-height: 750px) {
+    .modal-overlay.show .payment-content { transform: scale(0.92); }
+    .payment-modal .purchase-card-preview { height: 180px; }
+}
+/* Close Animation: Tilt and Slide */
+.modal-overlay.closing .modal-content {
+    transform: rotate(15deg) translateX(100px);
+    opacity: 0;
+    transition: transform 0.4s ease-in, opacity 0.4s ease-in;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer !important; /* Force pointer cursor */
+    z-index: 2147483647; /* Maximum z-index possible */
+    transition: all 0.3s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close i {
+    pointer-events: none; /* Ensure clicks pass through to the button */
+}
+
+.modal-close:hover {
+    color: #333;
+    background-color: rgba(0,0,0,0.05);
+    transform: rotate(90deg);
+}
+
+.modal-body h3 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal-body h3 span {
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.required {
+    color: #dc3545;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #a0a0a0;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.modal-submit-btn {
+    margin-top: 10px;
+    background-color: #0a1128; /* Dark Blue from image/footer */
+    color: #fff;
+    padding: 16px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    width: 150px; /* Or keep block if prefer full width, image shows smaller button? Image shows button aligned left? No, let's look at image again. */
+    /* Image shows "Proceed" button. It looks like a standard button. I'll make it inline-block or width auto. */
+    width: auto;
+    min-width: 160px;
+}
+
+.modal-submit-btn:hover {
+    background-color: #1a2340;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(10, 17, 40, 0.2);
+}
+
+/* Ensure placeholder text is lighter */
+::placeholder {
+    color: #aaa;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Purchase Modal Layout */
+.purchase-modal .purchase-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+.purchase-modal .purchase-left {
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.purchase-modal .purchase-card-preview {
+    width: 350px;
+    height: 200px;
+    background: #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+.purchase-modal #purchase-card-image {
+    max-width: 80%;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(1);
+}
+.purchase-modal .purchase-right {
+    min-width: 300px;
+}
+.purchase-modal .delivery-meta,
+.purchase-modal .delivery-time {
+    color: #777;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+.amount-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.amount-chips .chip {
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 8px 16px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.amount-chips .chip.active {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+.purchase-modal .btn-primary {
+    background-color: #0a1128;
+    color: #fff;
+}
+.purchase-modal .btn-primary:hover {
+    background-color: #1a2340;
+}
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Quantity Stepper */
+.qty-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.qty-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.qty-btn:hover {
+    background: #f5f5f5;
+    border-color: #999;
+}
+.qty-input {
+    max-width: 100px;
+    text-align: center;
+}
+@media (max-width: 992px) {
+    .purchase-modal .purchase-grid {
+        grid-template-columns: 1fr;
+    }
+    .purchase-modal .purchase-card-preview {
+        width: 100%;
+        max-width: 320px;
+        height: 180px;
+        margin: 0 auto 20px;
+    }
+}
+/* reduce internal padding for purchase modal to minimize height */
+.purchase-modal.modal-body {
+    padding: 20px;
+}
+
+/* Adaptive zoom to ensure all content fits without scrollbars on short viewports */
+@media (max-height: 850px) {
+    .modal-overlay.show .purchase-content { transform: scale(0.94); }
+}
+@media (max-height: 750px) {
+    .modal-overlay.show .purchase-content { transform: scale(0.92); }
+    .purchase-modal .purchase-card-preview { height: 180px; }
+}
+
+/* Responsive spacing for overlay and content */
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 32px 12px;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 20px; /* Reduced padding for mobile */
+        max-height: calc(100vh - 64px);
+    }
+    .purchase-content, .payment-content {
+        padding: 20px; /* Consistent padding for all modals */
+    }
+}
+
+.offcanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: none;
+    background: rgba(0,0,0,0.3);
+}
+.offcanvas.show {
+    display: block;
+}
+.offcanvas-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 360px;
+    max-width: 90%;
+    background: #fff;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    padding: 32px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+.offcanvas.show .offcanvas-panel {
+    transform: translateX(0);
+}
+.offcanvas-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.offcanvas-title {
+    font-size: 1.8rem;
+    margin: 10px 0 20px;
+    color: #333;
+    font-weight: 500;
+}
+.offcanvas-title span {
+    font-weight: 700;
+}
+.offcanvas-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.offcanvas-links li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+.offcanvas-links li a:hover {
+    color: var(--accent-color);
+}
+
+
+/* Form Status Messages */
+.form-status {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    min-height: 20px;
+}
+.form-status.success {
+    color: #28a745;
+}
+.form-status.error {
+    color: #dc3545;
+}
+
+/* New Form Layout & Alert Styles */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-row .half {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.brand-display {
+    background-color: #f0f0f0 !important;
+    font-weight: 600;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.alert-warning {
+    background-color: #fff9e6;
+    border: 1px solid #ffeeba;
+    color: #856404;
+}
+
+.alert-warning i {
+    font-size: 1.1rem;
+    color: #d4a017;
+}
+
+/* Updated color based on sample image */
+.modal-submit-btn {
+    background-color: #5c6bc0 !important; /* Blue from image */
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s;
+}
+
+.modal-submit-btn:hover {
+    background-color: #4a59a7 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+}
+
