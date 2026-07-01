@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Submissions</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6fb; color: #111827; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.06); margin-bottom: 16px; }
+    h1 { margin-top: 0; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    button { background: #111827; color: white; border: 0; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; vertical-align: top; }
+    .muted { color: #6b7280; font-size: 12px; }
+    .empty { color: #6b7280; padding: 16px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="toolbar">
+        <div>
+          <h1>Submitted Forms</h1>
+          <div class="muted">Private submissions visible only to authenticated admins.</div>
+        </div>
+        <button id="refresh">Refresh</button>
+      </div>
+      <div id="status" class="muted"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function loadSubmissions() {
+      const rows = document.getElementById('rows');
+      const status = document.getElementById('status');
+      status.textContent = 'Loading...';
+      rows.innerHTML = '';
+      try {
+        const response = await fetch('/api/submissions');
+        const data = await response.json();
+        const submissions = data.submissions || [];
+        if (!submissions.length) {
+          rows.innerHTML = '<tr><td colspan="4" class="empty">No submissions yet.</td></tr>';
+          status.textContent = 'No submissions found.';
+          return;
+        }
+        rows.innerHTML = submissions.map((item) => `
+          <tr>
+            <td>${item.name || ''}</td>
+            <td>${item.email || ''}</td>
+            <td>${(item.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td>
+            <td>${new Date(item.created_at).toLocaleString()}</td>
+          </tr>`).join('');
+        status.textContent = `${submissions.length} submission(s) found.`;
+      } catch (error) {
+        if (error?.message?.includes('401') || error?.message?.includes('Unauthorized')) {
+          window.location.href = '/login';
+          return;
+        }
+        status.textContent = 'Failed to load submissions.';
+        rows.innerHTML = '<tr><td colspan="4" class="empty">Unable to fetch submissions.</td></tr>';
+      }
+    }
+
+    document.getElementById('refresh').addEventListener('click', loadSubmissions);
+    loadSubmissions();
+  </script>
+</body>
+</html>

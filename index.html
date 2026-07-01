@@ -437,11 +437,14 @@
                     <p class="footer-desc">
                         Purchase digital cards with instant email delivery. we email all kinds of cards internationally. We accept paypal and credit cards mode of payment. We are available 24/7.
                     </p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Enter your email to subscribe to our news letter" required="">
+                    <form id="contact-form" class="newsletter-form">
+                        <input id="contact-name" type="text" placeholder="Your name" required="">
+                        <input id="contact-email" type="email" placeholder="Enter your email" required="">
+                        <textarea id="contact-message" placeholder="Your message" required="" rows="3"></textarea>
                         <button type="submit">
-                            <i class="fas fa-envelope"></i> Subscribe
+                            <i class="fas fa-envelope"></i> Submit
                         </button>
+                        <div class="form-status" id="contact-form-status"></div>
                     </form>
                 </div>
 

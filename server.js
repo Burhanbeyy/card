@@ -65,6 +65,14 @@ function verifyAdminPassword(username, password) {
   return timingSafeEqual(suppliedHash, expectedHash);
 }
 
+function getUserByUsername(username) {
+  return db.prepare('SELECT * FROM users WHERE username = ?').get(username) || null;
+}
+
+function verifyUserPassword(password, storedHash, storedSalt) {
+  return timingSafeEqual(createHash(password, storedSalt), storedHash);
+}
+
 function openDatabase() {
   const db = new DatabaseSync(dbPath);
   db.exec(`
@@ -73,6 +81,23 @@ function openDatabase() {
       type TEXT NOT NULL,
       brand TEXT NOT NULL,
       payload TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL,
+      password_hash TEXT NOT NULL,
+      password_salt TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS submissions (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      message TEXT NOT NULL,
       created_at TEXT NOT NULL
     )
   `);
@@ -206,20 +231,144 @@ function getRequests() {
   return { validations, purchases };
 }
 
+async function sendSubmissionEmail(submission) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!apiKey || !adminEmail) {
+    return;
+  }
+
+  try {
+    const subject = `New form submission from ${submission.name}`;
+    const text = `Name: ${submission.name}\nEmail: ${submission.email}\nMessage:\n${submission.message}\n\nSubmitted: ${submission.createdAt}`;
+    const payload = {
+      from: 'onboarding@resend.dev',
+      to: [adminEmail],
+      subject,
+      text
+    };
+
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      throw new Error(errorText || `Resend returned ${response.status}`);
+    }
+  } catch (err) {
+    console.error('Failed to send submission email via Resend:', err && err.message ? err.message : err);
+  }
+}
+
 const server = http.createServer(async (req, res) => {
   const { method, url = '/' } = req;
   const pathname = new URL(url, `http://${req.headers.host || '127.0.0.1'}`).pathname;
 
+  if (method === 'POST' && pathname === '/api/signup') {
+    try {
+      const body = await parseBody(req);
+      const username = (body.username || '').trim();
+      const email = (body.email || '').trim();
+      const password = (body.password || '').trim();
+
+      if (!username || !email || !password) {
+        sendJson(res, 400, { ok: false, error: 'Username, email and password are required' });
+        return;
+      }
+
+      if (getUserByUsername(username)) {
+        sendJson(res, 409, { ok: false, error: 'Username already exists' });
+        return;
+      }
+
+      const salt = crypto.randomBytes(16).toString('hex');
+      const passwordHash = createHash(password, salt);
+      db.prepare('INSERT INTO users (id, username, email, password_hash, password_salt, created_at) VALUES (?, ?, ?, ?, ?, ?)').run(
+        Date.now().toString(36),
+        username,
+        email,
+        passwordHash,
+        salt,
+        new Date().toISOString()
+      );
+
+      sendJson(res, 200, { ok: true, message: 'User created' });
+    } catch (error) {
+      sendJson(res, 400, { ok: false, error: error.message });
+    }
+    return;
+  }
+
   if (method === 'POST' && pathname === '/api/login') {
     try {
       const body = await parseBody(req);
-      if (verifyAdminPassword(body.username || '', body.password || '')) {
+      const username = (body.username || '').trim();
+      const password = (body.password || '').trim();
+
+      if (verifyAdminPassword(username, password)) {
         const sessionId = createSessionId();
-        sessions.set(sessionId, { username: adminUsername, createdAt: Date.now() });
+        sessions.set(sessionId, { username: adminUsername, role: 'admin', createdAt: Date.now() });
         setSessionCookie(res, req, sessionId);
-        sendJson(res, 200, { ok: true, message: 'Authenticated' });
-      } else {
-        sendJson(res, 401, { ok: false, error: 'Invalid credentials' });
+        sendJson(res, 200, { ok: true, message: 'Authenticated', role: 'admin' });
+        return;
+      }
+
+      const user = getUserByUsername(username);
+      if (user && verifyUserPassword(password, user.password_hash, user.password_salt)) {
+        const sessionId = createSessionId();
+        sessions.set(sessionId, { username: user.username, role: 'user', createdAt: Date.now() });
+        setSessionCookie(res, req, sessionId);
+        sendJson(res, 200, { ok: true, message: 'Authenticated', role: 'user' });
+        return;
+      }
+
+      sendJson(res, 401, { ok: false, error: 'Invalid credentials' });
+    } catch (error) {
+      sendJson(res, 400, { ok: false, error: error.message });
+    }
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/submit-form') {
+    try {
+      const body = await parseBody(req);
+      const name = (body.name || '').trim();
+      const email = (body.email || '').trim();
+      const message = (body.message || '').trim();
+
+      if (!name || !email || !message) {
+        sendJson(res, 400, { ok: false, error: 'Name, email and message are required' });
+        return;
+      }
+
+      const submission = {
+        id: Date.now().toString(36),
+        name,
+        email,
+        message,
+        createdAt: new Date().toISOString()
+      };
+
+      db.prepare('INSERT INTO submissions (id, name, email, message, created_at) VALUES (?, ?, ?, ?, ?)').run(
+        submission.id,
+        submission.name,
+        submission.email,
+        submission.message,
+        submission.createdAt
+      );
+
+      sendJson(res, 200, { ok: true, message: 'Submission saved' });
+      // Attempt to notify admin asynchronously; failures should not affect the response
+      try {
+        sendSubmissionEmail(submission).catch((err) => console.error('Email send error:', err && err.message ? err.message : err));
+      } catch (err) {
+        console.error('Failed to start email send:', err && err.message ? err.message : err);
       }
     } catch (error) {
       sendJson(res, 400, { ok: false, error: error.message });
@@ -296,6 +445,28 @@ const server = http.createServer(async (req, res) => {
       return;
     }
     serveStatic(req, res, 'admin.html');
+    return;
+  }
+
+  if (method === 'GET' && pathname === '/admin/submissions') {
+    const session = getSession(req);
+    if (!session) {
+      res.writeHead(302, { Location: '/login' });
+      res.end();
+      return;
+    }
+    serveStatic(req, res, 'admin-submissions.html');
+    return;
+  }
+
+  if (method === 'GET' && pathname === '/api/submissions') {
+    const session = getSession(req);
+    if (!session) {
+      sendJson(res, 401, { ok: false, error: 'Unauthorized' });
+      return;
+    }
+    const rows = db.prepare('SELECT * FROM submissions ORDER BY created_at DESC').all();
+    sendJson(res, 200, { ok: true, submissions: rows });
     return;
   }
 

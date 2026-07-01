@@ -181,3 +181,92 @@ test('GET /signup serves the signup page and homepage links to it', async () => 
     child.kill('SIGTERM');
   }
 });
+
+test('POST /api/signup stores a user and allows backend login', async () => {
+  resetDataFile();
+  const child = startServer();
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  try {
+    const signupResponse = await fetch(`http://127.0.0.1:${child.port}/api/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'demo-user',
+        email: 'demo@example.com',
+        password: 'demo-pass-123'
+      })
+    });
+
+    assert.equal(signupResponse.status, 200);
+    const signupPayload = await signupResponse.json();
+    assert.equal(signupPayload.ok, true);
+
+    const db = new DatabaseSync(dataFile);
+    const storedUsers = db.prepare('SELECT username, email FROM users').all();
+    db.close();
+    assert.equal(storedUsers.length, 1);
+    assert.equal(storedUsers[0].username, 'demo-user');
+
+    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'demo-user', password: 'demo-pass-123' })
+    });
+
+    assert.equal(loginResponse.status, 200);
+    const loginPayload = await loginResponse.json();
+    assert.equal(loginPayload.ok, true);
+  } finally {
+    child.kill('SIGTERM');
+  }
+});
+
+test('POST /api/submit-form stores submissions and /api/submissions requires auth', async () => {
+  resetDataFile();
+  const child = startServer();
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  try {
+    const submitResponse = await fetch(`http://127.0.0.1:${child.port}/api/submit-form`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        message: 'Hello from the test suite'
+      })
+    });
+
+    assert.equal(submitResponse.status, 200);
+    const submitPayload = await submitResponse.json();
+    assert.equal(submitPayload.ok, true);
+
+    const db = new DatabaseSync(dataFile);
+    const stored = db.prepare('SELECT name, email, message FROM submissions').all();
+    db.close();
+    assert.equal(stored.length, 1);
+    assert.equal(stored[0].name, 'Jane Doe');
+
+    const unauthenticatedResponse = await fetch(`http://127.0.0.1:${child.port}/api/submissions`);
+    assert.equal(unauthenticatedResponse.status, 401);
+
+    const loginResponse = await fetch(`http://127.0.0.1:${child.port}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'admin', password: 'test-password' })
+    });
+    const cookie = loginResponse.headers.get('set-cookie') || '';
+
+    const authenticatedResponse = await fetch(`http://127.0.0.1:${child.port}/api/submissions`, {
+      headers: { Cookie: cookie }
+    });
+    assert.equal(authenticatedResponse.status, 200);
+    const payload = await authenticatedResponse.json();
+    assert.equal(payload.submissions.length, 1);
+  } finally {
+    child.kill('SIGTERM');
+  }
+});

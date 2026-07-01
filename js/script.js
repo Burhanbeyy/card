@@ -200,6 +200,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById('contact-form-status');
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            try {
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('contact-name')?.value?.trim() || '',
+                        email: document.getElementById('contact-email')?.value?.trim() || '',
+                        message: document.getElementById('contact-message')?.value?.trim() || ''
+                    })
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || !data.ok) throw new Error(data.error || 'Submission failed');
+                if (statusEl) {
+                    statusEl.textContent = 'Thanks! Your message has been saved.';
+                    statusEl.className = 'form-status success';
+                }
+                contactForm.reset();
+            } catch (error) {
+                if (statusEl) {
+                    statusEl.textContent = error.message || 'Submission failed';
+                    statusEl.className = 'form-status error';
+                }
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
     // Handle form submissions
     const validateForm = document.getElementById('validate-form');
     if (validateForm) {
