@@ -302,19 +302,18 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (method === 'GET' && pathname === '/api/requests') {
-    if (!isAdminAuthorized(req)) {
-      sendJson(res, 403, { ok: false, error: 'Forbidden' });
-      return;
-    }
-    sendJson(res, 200, getRequests());
+  if (method === 'GET' && pathname === '/admin') {
+
+  console.log("🔥 ADMIN ROUTE HIT");
+
+  if (!isAdminAuthorized(req)) {
+    sendJson(res, 403, { ok: false, error: 'Forbidden' });
     return;
   }
 
-  if (method === 'GET' && pathname === '/') {
-    serveStatic(req, res, 'index.html');
-    return;
-  }
+  serveStatic(req, res, 'admin.html');
+  return;
+}
 
   if (method === 'GET' && pathname === '/admin') {
     if (!isAdminAuthorized(req)) {
