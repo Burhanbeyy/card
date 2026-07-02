@@ -152,6 +152,9 @@ function isAdminAuthorized(req) {
     `http://${req.headers.host || '127.0.0.1'}`
   ).searchParams.get('secret');
 
+  console.log("ENV SECRET:", adminSecret);
+  console.log("QUERY SECRET:", querySecret);
+
   return querySecret === adminSecret;
 }
 
