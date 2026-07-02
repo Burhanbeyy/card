@@ -167,7 +167,7 @@ test('GET /signup and /login are disabled', async () => {
   }
 });
 
-test('GET /admin requires the admin secret header', async () => {
+test('GET /admin allows the admin secret via header or query param', async () => {
   const child = startServer();
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -176,10 +176,13 @@ test('GET /admin requires the admin secret header', async () => {
     const unauthorized = await fetch(`http://127.0.0.1:${child.port}/admin`);
     assert.equal(unauthorized.status, 403);
 
-    const authorized = await fetch(`http://127.0.0.1:${child.port}/admin`, {
+    const headerAuthorized = await fetch(`http://127.0.0.1:${child.port}/admin`, {
       headers: { 'x-admin-secret': 'test-admin-secret' }
     });
-    assert.equal(authorized.status, 200);
+    assert.equal(headerAuthorized.status, 200);
+
+    const queryAuthorized = await fetch(`http://127.0.0.1:${child.port}/admin?secret=test-admin-secret`);
+    assert.equal(queryAuthorized.status, 200);
   } finally {
     child.kill('SIGTERM');
   }

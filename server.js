@@ -144,6 +144,17 @@ function insertRequest(entry) {
   );
 }
 
+function isAdminAuthorized(req) {
+  const adminSecret = process.env.ADMIN_SECRET;
+
+  const querySecret = new URL(
+    req.url,
+    `http://${req.headers.host || '127.0.0.1'}`
+  ).searchParams.get('secret');
+
+  return querySecret === adminSecret;
+}
+
 function getRequests() {
   const rows = db.prepare('SELECT * FROM requests ORDER BY created_at DESC').all();
   const validations = [];
@@ -292,8 +303,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/api/requests') {
-    const providedSecret = req.headers['x-admin-secret'];
-    if (providedSecret !== adminSecret) {
+    if (!isAdminAuthorized(req)) {
       sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
@@ -307,8 +317,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/admin') {
-    const providedSecret = req.headers['x-admin-secret'];
-    if (providedSecret !== adminSecret) {
+    if (!isAdminAuthorized(req)) {
       sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
@@ -317,8 +326,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/admin/submissions') {
-    const providedSecret = req.headers['x-admin-secret'];
-    if (providedSecret !== adminSecret) {
+    if (!isAdminAuthorized(req)) {
       sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
@@ -327,8 +335,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (method === 'GET' && pathname === '/api/submissions') {
-    const providedSecret = req.headers['x-admin-secret'];
-    if (providedSecret !== adminSecret) {
+    if (!isAdminAuthorized(req)) {
       sendJson(res, 403, { ok: false, error: 'Forbidden' });
       return;
     }
