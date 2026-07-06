@@ -216,17 +216,37 @@ const server = http.createServer(async (req, res) => {
   const pathname = new URL(url, `http://${req.headers.host || '127.0.0.1'}`).pathname;
 
   if (method === 'POST' && pathname === '/api/submit-form') {
-    try {
-      const body = await parseBody(req);
-      const name = (body.name || '').trim();
-      const email = (body.email || '').trim();
-      const message = (body.message || '').trim();
+  try {
+    const body = await parseBody(req);
+    const name = (body.name || '').trim();
+    const email = (body.email || '').trim();
+    const message = (body.message || '').trim();
 
-      if (!name || !email || !message) {
-        sendJson(res, 400, { ok: false, error: 'Name, email and message are required' });
-        return;
-      }
+    if (!name || !email || !message) {
+      sendJson(res, 400, { ok: false, error: 'Name, email and message are required' });
+      return;
+    }
 
+    db.prepare(`
+      INSERT INTO submissions (id, name, email, message, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(
+      Date.now().toString(36),
+      name,
+      email,
+      message,
+      new Date().toISOString()
+    );
+
+    sendJson(res, 200, { ok: true, message: 'Saved successfully' });
+    return;
+
+  } catch (err) {
+    sendJson(res, 500, { ok: false, error: 'Failed to save submission' });
+    return;
+  }
+}
+}
       const submission = {
         id: Date.now().toString(36),
         name,
