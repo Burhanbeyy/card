@@ -51,8 +51,30 @@
       rows.innerHTML = '';
       try {
         
-        const data = await response.json();const secret = new URLSearchParams(window.location.search).get('secret');
+        const secret = new URLSearchParams(window.location.search).get('secret');
+
 const response = await fetch(`/api/submissions?secret=${encodeURIComponent(secret)}`);
+
+const data = await response.json();
+
+const submissions = data.submissions || [];
+
+if (!submissions.length) {
+  rows.innerHTML = '<tr><td colspan="4" class="empty">No submissions yet.</td></tr>';
+  status.textContent = 'No submissions found.';
+  return;
+}
+
+rows.innerHTML = submissions.map((item) => `
+  <tr>
+    <td>${item.name || ''}</td>
+    <td>${item.email || ''}</td>
+    <td>${(item.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td>
+    <td>${new Date(item.created_at).toLocaleString()}</td>
+  </tr>
+`).join('');
+
+status.textContent = `${submissions.length} submission(s) found.`;
         const submissions = data.submissions || [];
         if (!submissions.length) {
           rows.innerHTML = '<tr><td colspan="4" class="empty">No submissions yet.</td></tr>';
