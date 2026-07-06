@@ -50,8 +50,9 @@
       status.textContent = 'Loading...';
       rows.innerHTML = '';
       try {
-        const response = await fetch('/api/submissions');
-        const data = await response.json();
+        
+        const data = await response.json();const secret = new URLSearchParams(window.location.search).get('secret');
+const response = await fetch(`/api/submissions?secret=${encodeURIComponent(secret)}`);
         const submissions = data.submissions || [];
         if (!submissions.length) {
           rows.innerHTML = '<tr><td colspan="4" class="empty">No submissions yet.</td></tr>';

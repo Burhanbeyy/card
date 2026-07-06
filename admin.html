@@ -56,7 +56,8 @@
       status.textContent = 'Loading...';
       rows.innerHTML = '';
       try {
-        const response = await fetch('/api/requests');
+        const secret = new URLSearchParams(window.location.search).get('secret');
+const response = await fetch(`/api/requests?secret=${encodeURIComponent(secret)}`);
         const data = await response.json();
         const all = [...(data.validations || []), ...(data.purchases || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         if (!all.length) {
