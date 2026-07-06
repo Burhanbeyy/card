@@ -30,7 +30,9 @@
           <div class="muted">Local requests from your gift card site</div>
         </div>
         <div>
-          <a href="/admin/submissions" style="display:inline-block; margin-right:8px; color:#111827; text-decoration:none; font-weight:600;">View Submissions</a>
+          <<<a id="subLink" href="/admin/submissions" style="display:inline-block; margin-right:8px; color:#111827; text-decoration:none; font-weight:600;">
+  View Submissions
+</a>
           <button id="refresh">Refresh</button>
         </div>
       </div>
@@ -94,3 +96,9 @@ const response = await fetch(`/api/requests?secret=${encodeURIComponent(secret)}
   </script>
 </body>
 </html>
+const secret = new URLSearchParams(window.location.search).get('secret');
+
+const subLink = document.getElementById('subLink');
+if (subLink && secret) {
+  subLink.href = `/admin/submissions?secret=${encodeURIComponent(secret)}`;
+}
