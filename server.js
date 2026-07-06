@@ -246,7 +246,6 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 }
-}
       const submission = {
         id: Date.now().toString(36),
         name,
